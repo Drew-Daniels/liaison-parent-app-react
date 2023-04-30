@@ -14,15 +14,15 @@ function App() {
       src: 'http://localhost:3002',
       classes: ['iframe'],
     },
-    handlers: {
+    methods: {
       logout: () => {
         setLogoutRequests(prevNumber => prevNumber + 1);
       },
-      sendToken: () => {
+      sendToken: ({ callChildMethod }) => {
         const token = nanoid();
-        parentRef.current?.callChildMethod({
-          functionName: 'saveToken',
-          args: token,
+        callChildMethod({
+          methodName: 'saveToken',
+          methodArgs: {token},
         });
       }
     }
@@ -46,7 +46,7 @@ function App() {
   )
 
   function initiateChildLogout() {
-    callChildMethod({ functionName: 'logout'});
+    callChildMethod({ methodName: 'logout', methodArgs: {}});
   }
 }
 
