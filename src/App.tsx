@@ -1,10 +1,11 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { Parent, IParent } from 'post-punk';
 import { nanoid } from 'nanoid';
 
 import './App.css'
 
 function App() {
+  const [logoutRequests, setLogoutRequests] = useState(0);
   const parentRef = useRef<IParent | null>(null);
 
   useEffect(() => {
@@ -16,7 +17,9 @@ function App() {
         classes: ['iframe'],
       },
       handlers: {
-        logout: () => console.log('Parent window logging out'),
+        logout: () => {
+          setLogoutRequests(prevNumber => prevNumber + 1);
+        },
         sendToken: () => {
           const token = nanoid();
           parentRef.current?.callChildMethod({
@@ -37,6 +40,10 @@ function App() {
         <button onClick={initiateChildLogout}>
           Initiate <em>Child</em> Logout Process
         </button>
+      </div>
+      <div>
+        <h2>Logout Requests:</h2>
+        <p>{logoutRequests}</p>
       </div>
       <div id="my-embedded-iframe-container" />
     </>
