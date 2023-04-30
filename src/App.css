@@ -40,3 +40,16 @@
 .read-the-docs {
   color: #888;
 }
+
+.iframe {
+  width: 700px;
+  height: 700px;
+}
+
+.buttons {
+  background-color: coral;
+  border-radius: 1em;
+  margin-bottom: 1em;
+  color: black;
+  padding: .5em 0;
+}
