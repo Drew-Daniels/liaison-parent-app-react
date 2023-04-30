@@ -1,36 +1,32 @@
-import { useRef, useState, useEffect } from 'react';
-import { Parent, IParent } from 'post-punk';
+import { useState } from 'react';
+import {  useParent } from 'post-punk';
 import { nanoid } from 'nanoid';
 
 import './App.css'
 
 function App() {
   const [logoutRequests, setLogoutRequests] = useState(0);
-  const parentRef = useRef<IParent | null>(null);
 
-  useEffect(() => {
-    parentRef.current = Parent({
-      iframeOpts: {
-        id: 'my-embedded-iframe',
-        containerId: 'my-embedded-iframe-container',
-        src: 'http://localhost:3002',
-        classes: ['iframe'],
+  const { callChildMethod } = useParent({
+    iframeOpts: {
+      id: 'my-embedded-iframe',
+      containerId: 'my-embedded-iframe-container',
+      src: 'http://localhost:3002',
+      classes: ['iframe'],
+    },
+    handlers: {
+      logout: () => {
+        setLogoutRequests(prevNumber => prevNumber + 1);
       },
-      handlers: {
-        logout: () => {
-          setLogoutRequests(prevNumber => prevNumber + 1);
-        },
-        sendToken: () => {
-          const token = nanoid();
-          parentRef.current?.callChildMethod({
-            functionName: 'saveToken',
-            args: token,
-          });
-        }
+      sendToken: () => {
+        const token = nanoid();
+        parentRef.current?.callChildMethod({
+          functionName: 'saveToken',
+          args: token,
+        });
       }
-    })
-    parentRef.current.init();
-  }, []);
+    }
+  })
 
   return (
     <>
@@ -50,7 +46,7 @@ function App() {
   )
 
   function initiateChildLogout() {
-    parentRef.current?.callChildMethod({ functionName: 'logout'});
+    callChildMethod({ functionName: 'logout'});
   }
 }
 
