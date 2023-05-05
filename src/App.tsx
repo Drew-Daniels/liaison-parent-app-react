@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import {  useParent } from 'post-punk';
+import { useParent } from '@drew-daniels/liaison-react-sdk';
 import { nanoid } from 'nanoid';
 
 import './App.css'
@@ -7,22 +7,22 @@ import './App.css'
 function App() {
   const [logoutRequests, setLogoutRequests] = useState(0);
 
-  const { callChildMethod } = useParent({
+  const { callIFrameEffect } = useParent({
     iframeOpts: {
       id: 'my-embedded-iframe',
       containerId: 'my-embedded-iframe-container',
       src: 'http://localhost:3002',
       classes: ['iframe'],
     },
-    methods: {
+    effects: {
       logout: () => {
         setLogoutRequests(prevNumber => prevNumber + 1);
       },
-      sendToken: ({ callChildMethod }) => {
+      sendToken: ({ callIFrameEffect }) => {
         const token = nanoid();
-        callChildMethod({
-          methodName: 'saveToken',
-          methodArgs: {token},
+        callIFrameEffect({
+          name: 'saveToken',
+          args: {token},
         });
       }
     }
@@ -46,7 +46,7 @@ function App() {
   )
 
   function initiateChildLogout() {
-    callChildMethod({ methodName: 'logout', methodArgs: {}});
+    callIFrameEffect({ name: 'logout', args: {} });
   }
 }
 

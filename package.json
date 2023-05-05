@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@drew-daniels/liaison-react-sdk": "^0.0.1",
     "@yarnpkg/pnpify": "^4.0.0-rc.42",
     "@yarnpkg/sdks": "^3.0.0-rc.42",
     "nanoid": "^4.0.2",
