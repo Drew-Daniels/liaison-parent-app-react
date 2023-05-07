@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useParent } from '@drew-daniels/liaison-react-sdk';
+import { useParent } from 'liaison-react';
 import { nanoid } from 'nanoid';
 
 import './App.css'
