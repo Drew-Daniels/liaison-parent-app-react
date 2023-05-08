@@ -12,12 +12,8 @@ function App() {
   const [logoutRequests, setLogoutRequests] = useState(0);
 
   const { callIFrameEffect } = useParent({
-    iframeOpts: {
-      id: 'my-embedded-iframe',
-      containerId: 'my-embedded-iframe-container',
-      src: 'http://localhost:3002',
-      classes: ['iframe'],
-    },
+    iframeId: 'my-embedded-iframe',
+    iframeSrc: 'http://localhost:3002',
     effects: {
       logout: () => {
         setLogoutRequests(prevNumber => prevNumber + 1);
@@ -53,7 +49,9 @@ function App() {
         <h2>Logout Requests:</h2>
         <p>{logoutRequests}</p>
       </div>
-      <div id="my-embedded-iframe-container" />
+      <div id="my-embedded-iframe-container">
+        <iframe id="my-embedded-iframe" src="http://localhost:3002" className="iframe"></iframe>
+      </div>
     </>
   )
 
