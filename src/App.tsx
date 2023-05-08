@@ -4,6 +4,10 @@ import { nanoid } from 'nanoid';
 
 import './App.css'
 
+function timeout(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 function App() {
   const [logoutRequests, setLogoutRequests] = useState(0);
 
@@ -19,6 +23,14 @@ function App() {
         setLogoutRequests(prevNumber => prevNumber + 1);
       },
       sendToken: ({ callIFrameEffect }) => {
+        const token = nanoid();
+        callIFrameEffect({
+          name: 'saveToken',
+          args: {token},
+        });
+      },
+      sendTokenAsync: async ({ callIFrameEffect }) => {
+        await timeout(3000);
         const token = nanoid();
         callIFrameEffect({
           name: 'saveToken',
