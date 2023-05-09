@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useParent } from 'liaison-react';
 import { nanoid } from 'nanoid';
 
@@ -9,30 +8,29 @@ function timeout(ms: number) {
 }
 
 function App() {
-  const [logoutRequests, setLogoutRequests] = useState(0);
-
   const { callIFrameEffect } = useParent({
     iframe: {
       id: 'my-embedded-iframe',
       src: 'http://localhost:3002',
     },
     effects: {
-      logout: () => {
-        setLogoutRequests(prevNumber => prevNumber + 1);
+      onLogoutComplete: () => {
+        // do something
       },
-      sendToken: ({ callIFrameEffect }) => {
+      onSendTokenSync: ({ callIFrameEffect }) => {
         const token = nanoid();
         callIFrameEffect({
-          name: 'saveToken',
-          args: {token},
+          name: 'onTokenReceived',
+          args: { token },
         });
       },
-      sendTokenAsync: async ({ callIFrameEffect }) => {
+      onSendTokenAsync: async ({ callIFrameEffect }) => {
+
         await timeout(3000);
         const token = nanoid();
         callIFrameEffect({
-          name: 'saveToken',
-          args: {token},
+          name: 'onTokenReceived',
+          args: { token },
         });
       }
     }
@@ -44,12 +42,8 @@ function App() {
       <div className='buttons'>
         <p>Request to run events within the iFrame!</p>
         <button onClick={initiateChildLogout}>
-          Initiate <em>Child</em> Logout Process
+          REQUEST iframe log out the user
         </button>
-      </div>
-      <div>
-        <h2>Logout Requests:</h2>
-        <p>{logoutRequests}</p>
       </div>
       <div id="my-embedded-iframe-container">
         <iframe id="my-embedded-iframe" src="http://localhost:3002" className="iframe"></iframe>
@@ -58,7 +52,7 @@ function App() {
   )
 
   function initiateChildLogout() {
-    callIFrameEffect({ name: 'logout', args: {} });
+    callIFrameEffect({ name: 'onLogoutRequested' });
   }
 }
 
