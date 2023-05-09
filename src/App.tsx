@@ -25,7 +25,6 @@ function App() {
         });
       },
       onSendTokenAsync: async ({ callIFrameEffect }) => {
-
         await timeout(3000);
         const token = nanoid();
         callIFrameEffect({
